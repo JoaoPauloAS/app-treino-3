@@ -4,8 +4,11 @@ import Navigation from "@/components/Navigation";
 import WorkoutCard from "@/components/WorkoutCard";
 import { Plus, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const WorkoutsPage = () => {
+  const { t } = useLanguage();
+  
   const workouts = [
     {
       id: 1,
@@ -48,7 +51,7 @@ const WorkoutsPage = () => {
     <>
       <div className="fitness-container">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">My Workouts</h1>
+          <h1 className="text-2xl font-bold">{t("my_workouts")}</h1>
           
           <Button variant="outline" size="icon">
             <Filter className="h-5 w-5" />
@@ -58,17 +61,17 @@ const WorkoutsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <Button className="fitness-btn w-full py-4 flex items-center justify-center gap-2">
             <Plus className="h-5 w-5" />
-            New Workout
+            {t("new_workout")}
           </Button>
           
           <Button variant="outline" className="w-full py-4 flex items-center justify-center gap-2">
             <Plus className="h-5 w-5" />
-            Create Routine
+            {t("create_routine")}
           </Button>
         </div>
         
         <div className="mb-8">
-          <h2 className="section-title">Recent Workouts</h2>
+          <h2 className="section-title">{t("recent_workouts")}</h2>
           
           {workouts.map((workout) => (
             <WorkoutCard

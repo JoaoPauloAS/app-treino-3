@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TimerWidgetProps {
   defaultSeconds?: number;
 }
 
 const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
+  const { t } = useLanguage();
   const [seconds, setSeconds] = useState(defaultSeconds);
   const [isActive, setIsActive] = useState(false);
   const [customTime, setCustomTime] = useState(defaultSeconds.toString());
@@ -54,7 +56,7 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
 
   return (
     <div className="fitness-card p-4">
-      <h3 className="text-lg font-bold mb-2">Rest Timer</h3>
+      <h3 className="text-lg font-bold mb-2">{t("rest_timer")}</h3>
       
       <div className="flex flex-col items-center">
         <div className="text-4xl font-bold mb-4 tracking-wider">{formatTime(seconds)}</div>
@@ -88,7 +90,7 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
             min="5"
           />
           <Button variant="secondary" size="sm" onClick={applyCustomTime}>
-            Set
+            {t("set")}
           </Button>
         </div>
       </div>
