@@ -86,7 +86,7 @@ const ExercisesPage = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
           <Input
             className="pl-10"
-            placeholder="Search exercises..."
+            placeholder={t("search_exercises")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -100,7 +100,7 @@ const ExercisesPage = () => {
               className="whitespace-nowrap"
               onClick={() => setActiveFilter(group)}
             >
-              {group.charAt(0).toUpperCase() + group.slice(1)}
+              {t(group)}
             </Button>
           ))}
         </div>
@@ -117,7 +117,7 @@ const ExercisesPage = () => {
             ))
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-500">No exercises found</p>
+              <p className="text-gray-500">{t("no_exercises_found")}</p>
             </div>
           )}
         </div>

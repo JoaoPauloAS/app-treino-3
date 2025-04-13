@@ -5,8 +5,11 @@ import WorkoutCard from "@/components/WorkoutCard";
 import TimerWidget from "@/components/TimerWidget";
 import { PlusCircle, ChevronRight, Zap, TrendingUp, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Dashboard = () => {
+  const { t } = useLanguage();
+  
   const recentWorkouts = [
     {
       id: 1,
@@ -35,12 +38,12 @@ const Dashboard = () => {
     <>
       <div className="fitness-container">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Workout Tracker</h1>
+          <h1 className="text-2xl font-bold">{t("workout_tracker")}</h1>
         </div>
 
         <Button className="fitness-btn w-full mb-6 py-6 flex items-center justify-center gap-2 text-lg">
           <PlusCircle className="h-5 w-5" />
-          Start New Workout
+          {t("start_new_workout")}
         </Button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
@@ -49,7 +52,7 @@ const Dashboard = () => {
               <Zap className="h-6 w-6 text-fitness-purple" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Weekly Volume</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">{t("weekly_volume")}</p>
               <p className="text-xl font-bold">12,450 kg</p>
             </div>
           </div>
@@ -59,7 +62,7 @@ const Dashboard = () => {
               <TrendingUp className="h-6 w-6 text-fitness-purple" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Workouts This Week</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">{t("workouts_this_week")}</p>
               <p className="text-xl font-bold">3 / 5</p>
             </div>
           </div>
@@ -67,9 +70,9 @@ const Dashboard = () => {
 
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
-            <h2 className="section-title">Recent Workouts</h2>
+            <h2 className="section-title">{t("recent_workouts")}</h2>
             <Button variant="ghost" size="sm" className="flex items-center text-fitness-purple">
-              View All <ChevronRight className="h-4 w-4 ml-1" />
+              {t("view_all")} <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
 
@@ -88,7 +91,7 @@ const Dashboard = () => {
           <TimerWidget />
           
           <div className="fitness-card p-4 mt-4 md:mt-0">
-            <h3 className="text-lg font-bold mb-2">Upcoming Workouts</h3>
+            <h3 className="text-lg font-bold mb-2">{t("upcoming_workouts")}</h3>
             
             <div className="space-y-3">
               <div className="flex items-center p-2 border-b border-gray-100 dark:border-gray-800">
@@ -97,7 +100,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="font-medium">Pull Workout</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">Tomorrow</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{t("tomorrow")}</p>
                 </div>
               </div>
               
@@ -107,7 +110,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="font-medium">Leg Day</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">In 2 days</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{t("in_days").replace("%d", "2")}</p>
                 </div>
               </div>
             </div>

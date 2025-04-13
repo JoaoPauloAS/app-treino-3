@@ -24,7 +24,33 @@ export type TranslationKey =
   | "minutes"
   | "seconds"
   | "exercise_library"
-  | "progress_tracking";
+  | "progress_tracking"
+  | "search_exercises"
+  | "no_exercises_found"
+  | "start_new_workout"
+  | "weekly_volume"
+  | "workouts_this_week"
+  | "view_all"
+  | "upcoming_workouts"
+  | "tomorrow"
+  | "in_days"
+  | "workout_tracker"
+  | "personal_records"
+  | "weight_progression"
+  | "last_month"
+  | "last_3_months"
+  | "last_6_months" 
+  | "last_year"
+  | "all_time"
+  | "select_period"
+  | "all"
+  | "chest"
+  | "back"
+  | "shoulders"
+  | "arms"
+  | "legs"
+  | "abs"
+  | "exercises_count";
 
 type TranslationDictionary = {
   [key in Language]: {
@@ -73,7 +99,43 @@ export const translations: TranslationDictionary = {
     
     // Páginas
     "exercise_library": "Biblioteca de Exercícios",
-    "progress_tracking": "Acompanhamento de Progresso"
+    "progress_tracking": "Acompanhamento de Progresso",
+    
+    // Busca de exercícios
+    "search_exercises": "Buscar exercícios...",
+    "no_exercises_found": "Nenhum exercício encontrado",
+    
+    // Dashboard
+    "start_new_workout": "Iniciar Novo Treino",
+    "weekly_volume": "Volume Semanal",
+    "workouts_this_week": "Treinos Esta Semana",
+    "view_all": "Ver Todos",
+    "upcoming_workouts": "Próximos Treinos",
+    "tomorrow": "Amanhã",
+    "in_days": "Em %d dias",
+    "workout_tracker": "Registro de Treinos",
+    
+    // Progresso
+    "personal_records": "Recordes Pessoais",
+    "weight_progression": "Progressão de peso (kg)",
+    "last_month": "Último Mês",
+    "last_3_months": "Últimos 3 Meses",
+    "last_6_months": "Últimos 6 Meses",
+    "last_year": "Último Ano",
+    "all_time": "Todo o Período",
+    "select_period": "Selecionar período",
+    
+    // Filtros de exercícios
+    "all": "Todos",
+    "chest": "Peito",
+    "back": "Costas",
+    "shoulders": "Ombros",
+    "arms": "Braços",
+    "legs": "Pernas",
+    "abs": "Abdômen",
+    
+    // Detalhes do treino
+    "exercises_count": "exercícios"
   },
   "en": {
     // Navigation
@@ -113,6 +175,42 @@ export const translations: TranslationDictionary = {
     
     // Pages
     "exercise_library": "Exercise Library",
-    "progress_tracking": "Progress Tracking"
+    "progress_tracking": "Progress Tracking",
+    
+    // Exercise search
+    "search_exercises": "Search exercises...",
+    "no_exercises_found": "No exercises found",
+    
+    // Dashboard
+    "start_new_workout": "Start New Workout",
+    "weekly_volume": "Weekly Volume",
+    "workouts_this_week": "Workouts This Week",
+    "view_all": "View All",
+    "upcoming_workouts": "Upcoming Workouts",
+    "tomorrow": "Tomorrow",
+    "in_days": "In %d days",
+    "workout_tracker": "Workout Tracker",
+    
+    // Progress
+    "personal_records": "Personal Records",
+    "weight_progression": "Weight progression (kg)",
+    "last_month": "Last Month",
+    "last_3_months": "Last 3 Months",
+    "last_6_months": "Last 6 Months",
+    "last_year": "Last Year",
+    "all_time": "All Time",
+    "select_period": "Select period",
+    
+    // Exercise filters
+    "all": "All",
+    "chest": "Chest",
+    "back": "Back",
+    "shoulders": "Shoulders",
+    "arms": "Arms",
+    "legs": "Legs",
+    "abs": "Abs",
+    
+    // Workout details
+    "exercises_count": "exercises"
   }
 };

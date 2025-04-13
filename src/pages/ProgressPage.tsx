@@ -54,7 +54,7 @@ const ProgressPage = () => {
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
             <Calendar className="h-5 w-5 mr-2 text-fitness-purple" />
-            <span className="font-medium">Last 3 Months</span>
+            <span className="font-medium">{t("last_3_months")}</span>
           </div>
           
           <Select
@@ -62,14 +62,14 @@ const ProgressPage = () => {
             onValueChange={setTimeRange}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select period" />
+              <SelectValue placeholder={t("select_period")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1month">Last Month</SelectItem>
-              <SelectItem value="3months">Last 3 Months</SelectItem>
-              <SelectItem value="6months">Last 6 Months</SelectItem>
-              <SelectItem value="1year">Last Year</SelectItem>
-              <SelectItem value="all">All Time</SelectItem>
+              <SelectItem value="1month">{t("last_month")}</SelectItem>
+              <SelectItem value="3months">{t("last_3_months")}</SelectItem>
+              <SelectItem value="6months">{t("last_6_months")}</SelectItem>
+              <SelectItem value="1year">{t("last_year")}</SelectItem>
+              <SelectItem value="all">{t("all_time")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -78,24 +78,24 @@ const ProgressPage = () => {
           <ProgressChart 
             data={benchPressData} 
             title="Bench Press Progress" 
-            exerciseName="Weight progression (kg)"
+            exerciseName={t("weight_progression")}
           />
           
           <ProgressChart 
             data={squatData} 
             title="Squat Progress" 
-            exerciseName="Weight progression (kg)"
+            exerciseName={t("weight_progression")}
           />
           
           <ProgressChart 
             data={deadliftData} 
             title="Deadlift Progress" 
-            exerciseName="Weight progression (kg)"
+            exerciseName={t("weight_progression")}
           />
         </div>
         
         <div className="fitness-card p-4 mb-6">
-          <h3 className="text-lg font-bold mb-4">Personal Records</h3>
+          <h3 className="text-lg font-bold mb-4">{t("personal_records")}</h3>
           
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-2">

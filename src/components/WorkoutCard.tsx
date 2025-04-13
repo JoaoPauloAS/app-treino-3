@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Clock, Calendar, Dumbbell } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface WorkoutCardProps {
   title: string;
@@ -17,6 +18,8 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
   exerciseCount,
   onClick
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div 
       className="fitness-card mb-4 cursor-pointer hover:translate-y-[-2px] transition-transform"
@@ -38,7 +41,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
           
           <div className="flex items-center mb-2">
             <Dumbbell className="h-4 w-4 mr-1" />
-            <span>{exerciseCount} exercises</span>
+            <span>{exerciseCount} {t("exercises_count")}</span>
           </div>
         </div>
       </div>
