@@ -1,0 +1,12 @@
+.next
+out
+node_modules
+public
+coverage
+dist
+build
+.DS_Store
+*.pem
+*.log
+.env*
+!.env.example 
