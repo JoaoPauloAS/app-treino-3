@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Input } from "@/components/ui/input";
 
 interface TimerWidgetProps {
   defaultSeconds?: number;
@@ -82,11 +83,11 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
         </div>
         
         <div className="flex items-center space-x-2">
-          <input
+          <Input
             type="number"
             value={customTime}
             onChange={handleCustomTimeChange}
-            className="w-16 py-1 px-2 border border-gray-300 dark:border-gray-600 rounded"
+            className="w-16 text-foreground bg-background"
             min="5"
           />
           <Button variant="secondary" size="sm" onClick={applyCustomTime}>
