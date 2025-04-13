@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import ProgressChart from "@/components/ProgressChart";
 import { Calendar, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Select,
   SelectContent,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/select";
 
 const ProgressPage = () => {
+  const { t } = useLanguage();
   const [timeRange, setTimeRange] = useState("3months");
   
   const benchPressData = [
@@ -46,7 +48,7 @@ const ProgressPage = () => {
     <>
       <div className="fitness-container">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Progress Tracking</h1>
+          <h1 className="text-2xl font-bold">{t("progress_tracking")}</h1>
         </div>
         
         <div className="flex justify-between items-center mb-6">

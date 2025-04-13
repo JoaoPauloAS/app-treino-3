@@ -20,7 +20,11 @@ export type TranslationKey =
   | "dark_mode"
   | "light_mode"
   | "language"
-  | "account";
+  | "account"
+  | "minutes"
+  | "seconds"
+  | "exercise_library"
+  | "progress_tracking";
 
 type TranslationDictionary = {
   [key in Language]: {
@@ -48,6 +52,8 @@ export const translations: TranslationDictionary = {
     // Timer
     "rest_timer": "Timer de Descanso",
     "set": "Definir",
+    "minutes": "min",
+    "seconds": "seg",
     
     // Perfil
     "profile_information": "Informações do Perfil",
@@ -63,7 +69,11 @@ export const translations: TranslationDictionary = {
     // Temas e idiomas
     "dark_mode": "Modo Escuro",
     "light_mode": "Modo Claro",
-    "language": "Idioma"
+    "language": "Idioma",
+    
+    // Páginas
+    "exercise_library": "Biblioteca de Exercícios",
+    "progress_tracking": "Acompanhamento de Progresso"
   },
   "en": {
     // Navigation
@@ -82,6 +92,8 @@ export const translations: TranslationDictionary = {
     // Timer
     "rest_timer": "Rest Timer",
     "set": "Set",
+    "minutes": "min",
+    "seconds": "sec",
     
     // Profile
     "profile_information": "Profile Information",
@@ -97,6 +109,10 @@ export const translations: TranslationDictionary = {
     // Themes and languages
     "dark_mode": "Dark Mode",
     "light_mode": "Light Mode",
-    "language": "Language"
+    "language": "Language",
+    
+    // Pages
+    "exercise_library": "Exercise Library",
+    "progress_tracking": "Progress Tracking"
   }
 };

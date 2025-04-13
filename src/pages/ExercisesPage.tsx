@@ -5,8 +5,10 @@ import ExerciseItem from "@/components/ExerciseItem";
 import { Search, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ExercisesPage = () => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   
@@ -73,7 +75,7 @@ const ExercisesPage = () => {
     <>
       <div className="fitness-container">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Exercise Library</h1>
+          <h1 className="text-2xl font-bold">{t("exercise_library")}</h1>
           
           <Button variant="ghost" size="icon">
             <PlusCircle className="h-5 w-5" />

@@ -13,7 +13,8 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
   const { t } = useLanguage();
   const [seconds, setSeconds] = useState(defaultSeconds);
   const [isActive, setIsActive] = useState(false);
-  const [customTime, setCustomTime] = useState(defaultSeconds.toString());
+  const [customMinutes, setCustomMinutes] = useState(Math.floor(defaultSeconds / 60).toString());
+  const [customSeconds, setCustomSeconds] = useState((defaultSeconds % 60).toString());
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -32,19 +33,28 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
   const resetTimer = (newTime = defaultSeconds) => {
     setIsActive(false);
     setSeconds(newTime);
+    setCustomMinutes(Math.floor(newTime / 60).toString());
+    setCustomSeconds((newTime % 60).toString());
   };
 
   const toggleTimer = () => {
     setIsActive(!isActive);
   };
 
-  const handleCustomTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomTime(e.target.value);
+  const handleCustomMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomMinutes(e.target.value);
+  };
+
+  const handleCustomSecondsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomSeconds(e.target.value);
   };
 
   const applyCustomTime = () => {
-    const newTime = parseInt(customTime);
-    if (!isNaN(newTime) && newTime > 0) {
+    const mins = parseInt(customMinutes) || 0;
+    const secs = parseInt(customSeconds) || 0;
+    const newTime = (mins * 60) + secs;
+    
+    if (newTime > 0) {
       resetTimer(newTime);
     }
   };
@@ -83,13 +93,29 @@ const TimerWidget: React.FC<TimerWidgetProps> = ({ defaultSeconds = 60 }) => {
         </div>
         
         <div className="flex items-center space-x-2">
-          <Input
-            type="number"
-            value={customTime}
-            onChange={handleCustomTimeChange}
-            className="w-16 text-foreground bg-background"
-            min="5"
-          />
+          <div className="flex items-center">
+            <Input
+              type="number"
+              value={customMinutes}
+              onChange={handleCustomMinutesChange}
+              className="w-16 text-foreground bg-background"
+              min="0"
+            />
+            <span className="ml-1 mr-2">{t("minutes")}</span>
+          </div>
+          
+          <div className="flex items-center">
+            <Input
+              type="number"
+              value={customSeconds}
+              onChange={handleCustomSecondsChange}
+              className="w-16 text-foreground bg-background"
+              min="0"
+              max="59"
+            />
+            <span className="ml-1 mr-2">{t("seconds")}</span>
+          </div>
+          
           <Button variant="secondary" size="sm" onClick={applyCustomTime}>
             {t("set")}
           </Button>
