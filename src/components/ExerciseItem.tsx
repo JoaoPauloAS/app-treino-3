@@ -1,5 +1,5 @@
-
 import React from "react";
+import Image from "next/image";
 
 interface ExerciseItemProps {
   name: string;
@@ -20,7 +20,13 @@ const ExerciseItem: React.FC<ExerciseItemProps> = ({
       onClick={onClick}
     >
       <div className="w-16 h-16 bg-fitness-gray dark:bg-fitness-dark-gray rounded-lg overflow-hidden mr-4 flex-shrink-0">
-        <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+        <Image 
+          src={imageUrl} 
+          alt={name} 
+          width={64}
+          height={64}
+          className="w-full h-full object-cover"
+        />
       </div>
       
       <div className="flex-1">

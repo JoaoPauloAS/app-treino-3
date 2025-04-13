@@ -1,9 +1,7 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import ProgressChart from "@/components/ProgressChart";
-import { Calendar, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Calendar } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Select,
