@@ -3,19 +3,21 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   eslint: {
-    // Desativa a verificação do ESLint durante o build
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Desativa a verificação do TypeScript durante o build
+    // Warning: This allows production builds to successfully complete even if
+    // your project has type errors.
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['localhost'],
+    domains: ['sysqvbodqpcnrhjkptsx.supabase.co'],
   },
   env: {
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     // NÃ£o exponha a chave de serviÃ§o no frontend
     // SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   },

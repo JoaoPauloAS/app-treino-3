@@ -1,5 +1,6 @@
-import { supabase } from '@/config/supabase';
 import { logger } from '@/lib/logger';
+import fs from 'fs';
+import path from 'path';
 
 // Tipos para backups
 interface BackupInfo {

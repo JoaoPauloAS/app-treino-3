@@ -53,6 +53,7 @@ src/
 ├── contexts/               # Contextos React
 ├── lib/                    # Bibliotecas e utilitários
 ├── models/                 # Modelos de dados
+├── scripts/                # Scripts de utilidade
 ├── services/               # Serviços
 ├── types/                  # Tipos TypeScript
 └── utils/                  # Funções utilitárias
@@ -74,11 +75,65 @@ A aplicação suporta dois idiomas:
 
 As traduções estão definidas em `src/utils/translations.ts`.
 
+## 🛡️ Segurança
+
+A aplicação implementa diversas medidas de segurança:
+
+### Proteção de Dados Sensíveis
+- Variáveis de ambiente para chaves secretas (usando `.env.local`)
+- Chaves de serviço protegidas e não expostas no frontend
+- Sanitização de dados sensíveis em logs
+
+### Autenticação e Autorização
+- JWT para autenticação via Supabase
+- Políticas de Row Level Security (RLS) no banco de dados
+- Proteção contra ataques de força bruta com limite de tentativas de login
+- Middleware para proteção de rotas privadas
+
+### Validação de Dados
+- Validação de entrada usando Zod
+- Sanitização para prevenção de XSS e injeção de código
+- Tipagem forte com TypeScript
+
+### Cabeçalhos de Segurança
+- HTTP Strict Transport Security (HSTS)
+- Content Security Policy (CSP)
+- X-Content-Type-Options
+- X-Frame-Options
+- Referrer-Policy
+
+### Backup e Recuperação
+- Scripts automatizados de backup (em `src/scripts/backup.ts`)
+- Rotação de backups antigos
+- Sistema de log para monitoramento
+
+### Verificação de Dependências
+- Script de verificação de vulnerabilidades (em `src/scripts/security-check.ts`)
+- Atualização automática de dependências críticas
+- Análise de uso inadequado de dependências
+
+### CSRF e XSS
+- Tokens CSRF para formulários
+- Sanitização de conteúdo gerado pelo usuário
+- Políticas de segurança para prevenção de XSS
+
 ## 🧪 Testes
 
 Para executar os testes:
 ```bash
 npm test
+```
+
+## 🔍 Verificação de Segurança
+
+Para executar a verificação de segurança das dependências:
+```bash
+npx ts-node src/scripts/security-check.ts
+```
+
+Para executar um backup manual:
+```bash
+npx ts-node src/scripts/backup.ts
 ```
 
 ## 📝 Licença

@@ -1,6 +1,10 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import { logger } from './lib/logger';
+
+// Lista de rotas protegidas que exigem autenticação
+const protectedRoutes = ['/dashboard', '/profile', '/workout'];
+// Lista de rotas públicas que não redirecionam para dashboard quando logado
+const publicOnlyRoutes = ['/login', '/register', '/reset-password'];
 
 export async function middleware(request: NextRequest) {
   // Forçar HTTPS em produção
@@ -15,7 +19,6 @@ export async function middleware(request: NextRequest) {
   }
 
   // Rotas protegidas que requerem autenticação
-  const protectedRoutes = ['/profile', '/workouts', '/progress'];
   const isProtectedRoute = protectedRoutes.some(route => 
     request.nextUrl.pathname.startsWith(route)
   );

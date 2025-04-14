@@ -1,60 +1,33 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest, afterEach } from '@jest/globals';
 import { mockSupabaseClient } from '../mocks/supabase';
-import { logger } from '@/lib/logger';
-import * as validationLib from '@/lib/validation';
-import { supabase } from '@/config/supabase';
+import * as loggerModule from '@/lib/logger';
+import * as supabase from '@/config/supabase';
 
-// Tipagem para os resultados da validação
-interface ValidationResult<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
+// Adiciona tipagem específica ao invés de any
+type ErrorType = Error | unknown;
 
-// Interface para o logger
-interface Logger {
-  auth: jest.Mock;
-  error: jest.Mock;
-  info: jest.Mock;
-  warn: jest.Mock;
-}
-
-// Interface para o Validate
-interface ValidateFunction {
-  (schema: any, data: any): ValidationResult;
-}
-
-// Mock modules
+// Mock do supabase
 jest.mock('@/config/supabase', () => ({
-  supabase: mockSupabaseClient
+  supabaseClient: mockSupabaseClient
 }));
 
+// Mock do logger
 jest.mock('@/lib/logger', () => ({
   logger: {
-    auth: jest.fn(),
-    error: jest.fn(),
     info: jest.fn(),
-    warn: jest.fn()
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
   }
 }));
 
-jest.mock('@/lib/validation', () => ({
-  validateAndSanitize: jest.fn().mockImplementation((schema, data) => ({
-    success: true,
-    data
-  })),
-  loginSchema: {},
-  registerSchema: {}
-}));
+// Remove o tipo ValidateFunction não utilizado
+// Adiciona tipos específicos ao invés de any
+type ValidationResultSuccess<T> = { success: true; data: T };
+type ValidationResultError = { success: false; error: string };
 
 // Import after mocks
 import authService from '@/services/authService';
-
-// Get references to mocks with explicit type casting for TypeScript
-// @ts-ignore - Ignorar erro de tipagem para permitir o teste
-const mockLogger = jest.requireMock('@/lib/logger').logger as any;
-// @ts-ignore - Ignorar erro de tipagem para permitir o teste
-const mockValidate = jest.requireMock('@/lib/validation').validateAndSanitize as any;
 
 describe('Auth Service', () => {
   // Define mock user and session data for tests
@@ -76,7 +49,7 @@ describe('Auth Service', () => {
     jest.spyOn(global.Date, 'now').mockImplementation(() => 1681732800000); // Mock para data fixa
     
     // Configure validate mock com sucesso por padrão
-    mockValidate.mockImplementation((schema: any, data: any): ValidationResult => ({
+    authService.validateLoginData.mockImplementation((schema: any, data: any): ValidationResultSuccess<typeof data> => ({
       success: true,
       data
     }));
@@ -116,15 +89,15 @@ describe('Auth Service', () => {
     });
 
     // Setup mocks
-    (logger.auth as jest.Mock).mockImplementation(mockLogger.auth);
-    (logger.error as jest.Mock).mockImplementation(mockLogger.error);
-    (logger.info as jest.Mock).mockImplementation(mockLogger.info);
-    (logger.warn as jest.Mock).mockImplementation(mockLogger.warn);
+    (loggerModule.logger.auth as jest.Mock).mockImplementation(loggerModule.logger.auth);
+    (loggerModule.logger.error as jest.Mock).mockImplementation(loggerModule.logger.error);
+    (loggerModule.logger.info as jest.Mock).mockImplementation(loggerModule.logger.info);
+    (loggerModule.logger.warn as jest.Mock).mockImplementation(loggerModule.logger.warn);
     
     // Em vez de espiar loginAttempts, vamos mock o módulo inteiro
     // e substituir as funções que manipulam o loginAttempts
-    jest.spyOn(authService, 'login').mockImplementation(async (credentials) => {
-      const validation = mockValidate(null, credentials);
+    authService.login.mockImplementation(async (credentials) => {
+      const validation = authService.validateLoginData(null, credentials);
       if (!validation.success) {
         throw new Error('Dados de login inválidos');
       }
@@ -137,17 +110,21 @@ describe('Auth Service', () => {
       });
       
       if (error) {
-        mockLogger.auth('login', false, undefined, { email, reason: error.message });
+        loggerModule.logger.auth('login', false, undefined, { email, reason: error.message });
         throw error;
       }
       
-      mockLogger.auth('login', true, data.user?.id, { email });
+      loggerModule.logger.auth('login', true, data.user?.id, { email });
       
       return {
         user: data.user,
         session: data.session
       };
     });
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('login', () => {
@@ -159,12 +136,12 @@ describe('Auth Service', () => {
   
       const result = await authService.login(credentials);
   
-      expect(mockValidate).toHaveBeenCalledWith(expect.any(Object), credentials);
+      expect(authService.validateLoginData).toHaveBeenCalledWith(expect.any(Object), credentials);
       expect(mockSupabaseClient.auth.signInWithPassword).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'ValidPassword1!'
       });
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'login', true, mockUser.id, { email: 'test@example.com' }
       );
       expect(result).toEqual({
@@ -185,7 +162,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.login(credentials)).rejects.toThrow();
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'login', false, undefined, expect.objectContaining({ 
           email: 'test@example.com',
           reason: 'Credenciais inválidas'
@@ -199,7 +176,7 @@ describe('Auth Service', () => {
         password: 'senha'
       };
 
-      mockValidate.mockReturnValueOnce({
+      authService.validateLoginData.mockReturnValueOnce({
         success: false,
         error: 'Email inválido'
       });
@@ -230,7 +207,7 @@ describe('Auth Service', () => {
       
       // Verificar que o Supabase foi chamado apenas 5 vezes
       expect(mockSupabaseClient.auth.signInWithPassword).toHaveBeenCalledTimes(5);
-      expect(mockLogger.auth).toHaveBeenLastCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenLastCalledWith(
         'login', false, undefined, expect.objectContaining({ 
           reason: 'account_locked'
         })
@@ -248,13 +225,13 @@ describe('Auth Service', () => {
   
       const result = await authService.register(registerData);
   
-      expect(mockValidate).toHaveBeenCalledWith(expect.any(Object), registerData);
+      expect(authService.validateLoginData).toHaveBeenCalledWith(expect.any(Object), registerData);
       expect(mockSupabaseClient.auth.signUp).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'ValidPassword1!',
         options: expect.any(Object)
       });
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'registration', true, mockUser.id, { email: 'test@example.com' }
       );
       expect(result).toEqual({
@@ -270,7 +247,7 @@ describe('Auth Service', () => {
         confirmPassword: 'outra-senha'
       };
 
-      mockValidate.mockReturnValueOnce({
+      authService.validateLoginData.mockReturnValueOnce({
         success: false,
         error: 'As senhas não coincidem'
       });
@@ -292,7 +269,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.register(registerData)).rejects.toThrow();
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'registration', false, undefined, expect.objectContaining({ 
           email: 'existente@example.com',
           reason: 'Email já existe'
@@ -306,7 +283,7 @@ describe('Auth Service', () => {
       const result = await authService.logout();
       
       expect(mockSupabaseClient.auth.signOut).toHaveBeenCalled();
-      expect(mockLogger.auth).toHaveBeenCalledWith('logout', true);
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith('logout', true);
       expect(result).toBe(true);
     });
 
@@ -316,7 +293,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.logout()).rejects.toThrow();
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'logout', false, undefined, expect.objectContaining({ 
           reason: 'Erro ao fazer logout'
         })
@@ -342,7 +319,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.getSession()).rejects.toThrow();
-      expect(mockLogger.error).toHaveBeenCalled();
+      expect(loggerModule.logger.error).toHaveBeenCalled();
     });
   });
 
@@ -356,7 +333,7 @@ describe('Auth Service', () => {
         email,
         expect.any(Object)
       );
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'password-reset-request', true, undefined, { email }
       );
       expect(result).toBe(true);
@@ -370,7 +347,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.resetPassword(email)).rejects.toThrow();
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'password-reset-request', false, undefined, 
         expect.objectContaining({ 
           email,
@@ -389,7 +366,7 @@ describe('Auth Service', () => {
       expect(mockSupabaseClient.auth.updateUser).toHaveBeenCalledWith({
         password: newPassword
       });
-      expect(mockLogger.auth).toHaveBeenCalledWith('password-update', true);
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith('password-update', true);
       expect(result).toBe(true);
     });
 
@@ -402,7 +379,7 @@ describe('Auth Service', () => {
       });
 
       await expect(authService.updatePassword(newPassword)).rejects.toThrow();
-      expect(mockLogger.auth).toHaveBeenCalledWith(
+      expect(loggerModule.logger.auth).toHaveBeenCalledWith(
         'password-update', false, undefined, 
         expect.objectContaining({ reason: 'Senha muito fraca' })
       );

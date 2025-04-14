@@ -56,15 +56,26 @@ const createMockSupabaseClient = () => {
         error: null,
       }),
       
-      onAuthStateChange: jest.fn().mockImplementation((callback) => {
-        return {
-          data: {
-            subscription: {
-              unsubscribe: jest.fn(),
-            },
-          },
+      onAuthStateChange: jest.fn().mockImplementation(() => {
+        return { 
+          data: { subscription: { unsubscribe: jest.fn() } }, 
+          error: null 
         };
       }),
+      
+      _simulateAuthChange() {
+        const listeners = this.onAuthStateChange.mock.calls;
+        
+        if (listeners.length > 0) {
+          listeners.forEach(([event]) => {
+            if (event) {
+              event('SIGNED_IN', {
+                session: { access_token: 'mock-token' }
+              });
+            }
+          });
+        }
+      },
     },
     
     from: jest.fn().mockImplementation(() => ({

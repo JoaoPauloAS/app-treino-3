@@ -115,23 +115,36 @@ export function checkPasswordStrength(password: string): {
 }
 
 /**
- * Proteção contra data leaks
- * Sanitiza objeto removendo propriedades sensíveis antes de enviar ao cliente
+ * Remove campos sensíveis de dados de usuário
+ * @param userData Objeto com dados de usuário
+ * @returns Objeto com dados sanitizados 
  */
-export function sanitizeUserData(userData: any): any {
-  if (!userData) return userData;
-  
-  // Cria um novo objeto omitindo campos sensíveis
-  const { 
-    password, 
-    recovery_token, 
-    confirmation_token, 
-    email_confirm_token, 
-    phone_confirm_token,
-    ...safeData 
-  } = userData;
-  
-  return safeData;
+export function sanitizeUserData<T extends Record<string, unknown>>(userData: T | null): Partial<T> | null {
+  if (!userData) return null;
+
+  // Lista de campos sensíveis a serem removidos
+  const sensitiveFields = [
+    '_password',
+    'password',
+    '_recovery_token',
+    'recovery_token',
+    '_confirmation_token',
+    'confirmation_token',
+    '_email_confirm_token',
+    'email_confirm_token',
+    '_phone_confirm_token',
+    'phone_confirm_token',
+  ];
+
+  // Criar uma cópia do objeto original
+  const sanitized = { ...userData };
+
+  // Remover campos sensíveis
+  sensitiveFields.forEach(field => {
+    delete sanitized[field as keyof T];
+  });
+
+  return sanitized;
 }
 
 /**

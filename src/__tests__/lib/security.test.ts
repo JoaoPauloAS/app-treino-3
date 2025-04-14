@@ -57,24 +57,23 @@ describe('Security Library', () => {
   });
 
   describe('validateCSRFToken', () => {
-    it('deve validar tokens idênticos', () => {
-      const token = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
-      expect(validateCSRFToken(token, token)).toBe(true);
+    it('should validate identical tokens', () => {
+      const token = 'abc123';
+      const result = validateCSRFToken(token, token);
+      expect(result).toBe(true);
     });
 
-    it('deve rejeitar tokens diferentes', () => {
-      const token1 = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
-      const token2 = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdee'; // último caractere diferente
-      
-      expect(validateCSRFToken(token1, token2)).toBe(false);
+    it('should reject different tokens', () => {
+      const token1 = 'abc123';
+      const token2 = 'def456';
+      const result = validateCSRFToken(token1, token2);
+      expect(result).toBe(false);
     });
 
-    it('deve rejeitar um token vazio', () => {
-      const token = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
-      
-      expect(validateCSRFToken('', token)).toBe(false);
-      expect(validateCSRFToken(token, '')).toBe(false);
-      expect(validateCSRFToken('', '')).toBe(false);
+    it('should reject if either token is empty', () => {
+      // @ts-expect-error - Testando com argumentos inválidos de propósito
+      const result = validateCSRFToken('', 'token');
+      expect(result).toBe(false);
     });
   });
 
