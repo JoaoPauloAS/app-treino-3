@@ -51,7 +51,12 @@ const nextConfig = {
         ],
       },
     ]
-  }
+  },
+  // Desativar exportação estática para evitar erros com useLocation durante o SSG
+  output: 'standalone',
+  experimental: {
+    // ... existing code ...
+  },
 }
 
 module.exports = nextConfig 
