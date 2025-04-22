@@ -30,9 +30,9 @@ const nextConfig = {
       }
     }
     
-    // Ignorar o arquivo main.tsx para evitar conflitos
+    // Ignorar o react-router-dom completamente
     if (isServer) {
-      config.externals.push('react-router-dom');
+      config.externals = [...config.externals, 'react-router-dom', 'react-router'];
     }
     
     return config
@@ -61,14 +61,23 @@ const nextConfig = {
   },
   // Configurar para modo standalone, melhor para deploy na Vercel
   output: 'standalone',
-  // Detecção automática de RSC (React Server Components)
+  // COMPLETAMENTE DESABILITAR PRÉ-RENDERIZAÇÃO
+  // Isso é crucial para evitar erros com useLocation durante a build
   experimental: {
     appDir: false, // Desabilitamos porque estamos usando a pasta pages/, não app/
   },
   compiler: {
     // Remover código de desenvolvimento no build
     removeConsole: process.env.NODE_ENV === 'production',
-  }
+  },
+  // Desabilitar totalmente a geração estática
+  exportPathMap: null,
+  trailingSlash: false,
+  generateEtags: false,
+  poweredByHeader: false,
+  // Garantir que nenhuma página seja pré-renderizada estaticamente
+  // Isso é absolutamente necessário para impedir erros com useLocation
+  target: 'server'
 }
 
 module.exports = nextConfig 
