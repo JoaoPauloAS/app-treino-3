@@ -22,12 +22,19 @@ const nextConfig = {
     // SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   },
   webpack: (config, { dev, isServer }) => {
+    // Aqui podemos adicionar regras webpack adicionais
     if (dev && !isServer) {
       config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
       }
     }
+    
+    // Ignorar o arquivo main.tsx para evitar conflitos
+    if (isServer) {
+      config.externals.push('react-router-dom');
+    }
+    
     return config
   },
   // Configurações de cabeçalhos de segurança
@@ -52,10 +59,16 @@ const nextConfig = {
       },
     ]
   },
+  // Configurar para modo standalone, melhor para deploy na Vercel
   output: 'standalone',
+  // Detecção automática de RSC (React Server Components)
   experimental: {
-    // Sem configurações experimentais adicionais no momento
+    appDir: false, // Desabilitamos porque estamos usando a pasta pages/, não app/
   },
+  compiler: {
+    // Remover código de desenvolvimento no build
+    removeConsole: process.env.NODE_ENV === 'production',
+  }
 }
 
 module.exports = nextConfig 
