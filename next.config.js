@@ -30,11 +30,6 @@ const nextConfig = {
       }
     }
     
-    // Ignorar o react-router-dom completamente
-    if (isServer) {
-      config.externals = [...config.externals, 'react-router-dom', 'react-router'];
-    }
-    
     return config
   },
   // Configurações de cabeçalhos de segurança

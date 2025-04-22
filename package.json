@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "echo 'Skipping Next.js build'",
-    "start": "node server-minimal.js",
+    "build": "next build",
+    "start": "next start",
     "server": "node server.js",
     "lint": "next lint",
     "test": "jest",
@@ -15,8 +15,7 @@
     "dev:test": "concurrently \"npm run dev -- -p 3001\" \"npm run server\"",
     "dev:alt": "concurrently \"next dev -p 3001\" \"node dev-server.js\"",
     "novo-server": "node novo-servidor.js",
-    "pre-build": "node scripts/emergencyFix.js",
-    "vercel-build": "echo 'Skipping build and using emergency server'"
+    "pre-build": "node scripts/emergencyFix.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.4",

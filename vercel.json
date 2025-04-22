@@ -1,15 +1,7 @@
 {
   "version": 2,
   "public": true,
-  "builds": [
-    { "src": "server-minimal.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/server-minimal.js" }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "NEXT_STATIC_GENERATION": "false",
-    "NEXT_DISABLE_STATIC_GENERATION": "true"
-  }
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "outputDirectory": ".next"
 } 
