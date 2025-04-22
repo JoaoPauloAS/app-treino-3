@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="fitness-container">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Workout Tracker</h1>
+        <h1 className="text-2xl font-bold">Load Progressive</h1>
       </div>
 
       <Button className="fitness-btn w-full mb-6 py-6 flex items-center justify-center gap-2 text-lg">

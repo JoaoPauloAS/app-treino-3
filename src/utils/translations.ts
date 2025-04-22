@@ -114,7 +114,7 @@ export const translations: TranslationDictionary = {
     "upcoming_workouts": "Próximos Treinos",
     "tomorrow": "Amanhã",
     "in_days": "Em %d dias",
-    "workout_tracker": "Registro de Treinos",
+    "workout_tracker": "Load Progressive",
     
     // Progresso
     "personal_records": "Recordes Pessoais",
