@@ -14,7 +14,8 @@
     "security:check": "npm audit",
     "dev:test": "concurrently \"npm run dev -- -p 3001\" \"npm run server\"",
     "dev:alt": "concurrently \"next dev -p 3001\" \"node dev-server.js\"",
-    "novo-server": "node novo-servidor.js"
+    "novo-server": "node novo-servidor.js",
+    "pre-build": "node scripts/emergencyFix.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.4",

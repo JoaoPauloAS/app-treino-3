@@ -33,7 +33,7 @@
       ]
     }
   ],
-  "buildCommand": "NEXT_DISABLE_STATIC_GENERATION=true npm run build",
+  "buildCommand": "npm run pre-build && npm run build",
   "installCommand": "npm install",
   "outputDirectory": ".next",
   "framework": "nextjs",
@@ -49,5 +49,29 @@
     "deploymentEnabled": {
       "main": true
     }
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "installCommand": "npm install && npm uninstall react-router-dom && npm uninstall react-router",
+        "buildCommand": "NEXT_DISABLE_STATIC_GENERATION=true NODE_ENV=production next build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_DISABLE_STATIC_GENERATION": "true",
+    "NODE_ENV": "production"
   }
 } 
