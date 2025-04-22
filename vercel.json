@@ -15,5 +15,13 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ]
+  ],
+  "buildCommand": "next build",
+  "framework": "nextjs",
+  "ignoreCommand": "echo 'Ignoring build step'",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
 } 
