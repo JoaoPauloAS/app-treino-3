@@ -90,6 +90,7 @@
     "ts-jest": "^29.3.2"
   },
   "overrides": {
+    "pify": "^5.0.0",
     "glob": "^10.3.10",
     "inflight": "^1.0.6",
     "rimraf": "^5.0.5",
