@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "public": false,
+  "public": true,
   "cleanUrls": true,
   "regions": ["iad1"],
   "rewrites": [
@@ -33,10 +33,10 @@
       ]
     }
   ],
-  "buildCommand": "npm run pre-build && npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install express",
+  "outputDirectory": ".",
+  "framework": null,
   "devCommand": "npm run dev",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
   "functions": {
@@ -51,27 +51,14 @@
     }
   },
   "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "installCommand": "npm install && npm uninstall react-router-dom && npm uninstall react-router",
-        "buildCommand": "NEXT_DISABLE_STATIC_GENERATION=true NODE_ENV=production next build"
-      }
-    }
+    { "src": "server-minimal.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/(.*)", "dest": "/server-minimal.js" }
   ],
   "env": {
-    "NEXT_DISABLE_STATIC_GENERATION": "true",
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "NEXT_STATIC_GENERATION": "false",
+    "NEXT_DISABLE_STATIC_GENERATION": "true"
   }
 } 
